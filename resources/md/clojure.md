@@ -38,3 +38,22 @@ Note: all code executed in thread, below is code and corresponding impact:
     OPERATION THREADER:
         doto - target go through all operations also implicit return
         ->, ->> - target to result to target to result...
+        juxt - target go through mutiple relation to get multiple result
+        
+        
+## Symbol
+Refer to [language](language.md) for Symbol definition
+        
+### Why clojure need to make Symbol available to program?
+Clojure have macro to program on Program Source which is composed of Symbols
+
+### Structure
+
+    Symbol -> Var -> Data
+    Symbol -> Class
+
+Note:  
+Symbol's Semantic is the Symbol's corresponding Data  
+Var by default bind to: object[clojure.lang.Var$Unbound 0x2ad20528 "Unbound: #'${var's symbol}"]  
+Var can be invoked, which internally invoke it's corresponding Data  
+Var created via: defXXX, declare, intern

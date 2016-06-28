@@ -18,6 +18,13 @@ Function Application will generate value of dependent variable
 Function Name is not part of Function, it's a Reference to Function  
 Function can not contains itself, but can contains a reference of itself  
 
+### Parameter:
+A symbol which will bind to independent variable
+
+Variadic Parameter:  
+A symbol which will bind to multiple independent variable
+(combine multiple independent variable via collection then bind symbol to collection)
+
 Parameter order best practice:
 
 * parameter for missing process comes first
