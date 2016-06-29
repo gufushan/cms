@@ -47,13 +47,15 @@ Refer to [language](language.md) for Symbol definition
 ### Why clojure need to make Symbol available to program?
 Clojure have macro to program on Program Source which is composed of Symbols
 
-### Structure
+### Runtime Structure
 
-    Symbol -> Var -> Data
+    Symbol -> Var -> Value
     Symbol -> Class
 
 Note:  
-Symbol's Semantic is the Symbol's corresponding Data  
+Symbol's Semantic is the Symbol's corresponding Value  
 Var by default bind to: object[clojure.lang.Var$Unbound 0x2ad20528 "Unbound: #'${var's symbol}"]  
-Var can be invoked, which internally invoke it's corresponding Data  
-Var created via: defXXX, declare, intern
+Var can be invoked, which internally invoke it's corresponding Value  
+Var created via: defXXX, declare, intern  
+Value is immutable Data. Even record, which compiled to java object, is Value
+

@@ -11,9 +11,11 @@
     (include-css "/assets/bootstrap/css/bootstrap.css")
     ]
    [:body
-    (link-to "/oauth2/entrypoint" "login")
-    [:div
-     (str "Welcome: " (-> request :identity))]
+    (if (:identity request)
+     [:div
+     (str "Welcome: " (-> request :identity))] 
+      (link-to "/oauth2/entrypoint" "login"))
+    
     content
     (include-js "http://tajs.qq.com/stats?sId=56953083" "/assets/jquery/jquery.js" "/assets/tether/dist/js/tether.js" "/assets/bootstrap/js/bootstrap.js")
     ]])

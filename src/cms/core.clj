@@ -38,8 +38,8 @@
 
 (defn app-routes-factory [qq-oauth2]
   (routes
-    (GET "/" [request] (-> "md" io/resource .getFile io/file file-seq rest link-list (default-layout request) html))
-    (GET "/md/:md-name" [md-name] (-> (str "md/" md-name) io/resource slurp mp to-hiccup (default-layout nil) html))
+    (GET "/" request (-> "md" io/resource .getFile io/file file-seq rest link-list (default-layout request) html))
+    (GET "/md/:md-name" [md-name :as request] (-> (str "md/" md-name) io/resource slurp mp to-hiccup (default-layout request) html))
     (GET "/postlogin/:path" [path] (str "This path need to login:" path))
     (GET "/oauth2/entrypoint" []
       (as-> qq-oauth2 $
