@@ -19,6 +19,7 @@
                  [buddy/buddy-auth "1.1.0"]
                  [oauth-clj "0.1.15"]
                  [org.danielsz/system "0.3.0"]
+                 [com.cemerick/pomegranate "0.3.1"]
 
                  [lein-light-nrepl "0.3.3"]
 

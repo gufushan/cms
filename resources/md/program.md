@@ -12,10 +12,6 @@ Program Impl(Behavior) should support language semantics.
 
 ## Program State
 
-
-
-## Progam Runtime
-
-### Data Source
-* From source code
-* Temp created during runtime
+* Source
+* Artifact
+* Runtime

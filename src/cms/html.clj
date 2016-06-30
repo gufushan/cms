@@ -1,7 +1,9 @@
 (ns cms.html
-  (:require [hiccup.page :refer :all]
-            [hiccup.element :refer :all]
-            [hiccup.form :refer :all] ))
+  (:require 
+    [clojure.tools.logging :as log]
+    [hiccup.page :refer :all]
+    [hiccup.element :refer :all]
+    [hiccup.form :refer :all] ))
 
 
 (defn default-layout [content request]
@@ -12,10 +14,11 @@
     ]
    [:body
     (if (:identity request)
-     [:div
-     (str "Welcome: " (-> request :identity))] 
+      [:div
+       (str "Welcome: " (-> request :identity))
+       (link-to "/remove-identity" "logout")]
       (link-to "/oauth2/entrypoint" "login"))
-    
+
     content
     (include-js "http://tajs.qq.com/stats?sId=56953083" "/assets/jquery/jquery.js" "/assets/tether/dist/js/tether.js" "/assets/bootstrap/js/bootstrap.js")
     ]])
@@ -23,6 +26,6 @@
 (defn link-list [files]
   [:ol
    (map (fn [file]
-         (let [file-name (.getName file)]
-           [:li (link-to (str "md/" file-name) file-name)])) 
-       files)])
+          (let [file-name (.getName file)]
+            [:li (link-to (str "md/" file-name) file-name)])) 
+        files)])
