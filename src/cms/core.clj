@@ -70,7 +70,7 @@
                                                                  "oauth_consumer_key" (:client-id qq-oauth2)
                                                                  "openid" (:identity $)
                                                                  }})))
-               (assoc (response/redirect (-> $ :history rseq log/spy (nth 1))) :session $)))))
+               (assoc (response/redirect (-> $ :history rseq (nth 1))) :session $)))))
 
 
 (defn wrap-history [handler & [max-size]]
@@ -78,16 +78,17 @@
     (fn [request]
       (if (zero? max-size)
         (handler request)
-        (-> 
-          (handler (log/spy request))
-          log/spy
-          (update-in [:session :history]
+        (as-> 
+          (handler (log/spy request)) $
+          (log/spy $)
+          (if (contains? $ :session) $ (assoc $ :session (:session request)))
+          (update-in $ [:session :history]
                      (fn [history]
-                       (as-> (or history []) $
-                             (if (or (< max-size 0) (> max-size (count $)))
-                               $
-                               (subvec $ 1 max-size))
-                             (conj $ (:uri request))))))))))
+                       (as-> (or history []) $$
+                             (if (or (< max-size 0) (> max-size (count $$)))
+                               $$
+                               (subvec $$ 1 max-size))
+                             (conj $$ (:uri request))))))))))
 
 
 (defn app-factory [app-routes]

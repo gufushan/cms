@@ -24,5 +24,5 @@
                  [lein-light-nrepl "0.3.3"]
 
                  [ch.qos.logback/logback-classic "1.1.7"]]
-  :main cms.core
-  :repl-options {:nrepl-middleware [lighttable.nrepl.handler/lighttable-ops]})
+  :repl-options {:nrepl-middleware [lighttable.nrepl.handler/lighttable-ops]}
+  :profiles {:dev {:source-paths ["dev"]}})
