@@ -21,8 +21,5 @@
                  [org.danielsz/system "0.3.0"]
                  [com.cemerick/pomegranate "0.3.1"]
 
-                 [lein-light-nrepl "0.3.3"]
-
                  [ch.qos.logback/logback-classic "1.1.7"]]
-  :repl-options {:nrepl-middleware [lighttable.nrepl.handler/lighttable-ops]}
   :profiles {:dev {:source-paths ["dev"]}})

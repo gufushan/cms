@@ -2,6 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.core.async :as async]
             [clojure.tools.logging :as log]
+            [clojure.core.server :refer [start-server stop-server]]
             [ring.util.response :as response]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
@@ -17,6 +18,7 @@
             [com.stuartsierra.component :as component]
             [system.repl :refer [system set-init! start stop reset]]
             [system.components.jetty :refer [new-web-server]]
+            [cemerick.pomegranate :refer [add-dependencies]]
 
             [cms.html :refer :all]))
 
@@ -110,8 +112,14 @@
         (component/system-map
           :web (new-web-server 80 $))))
 
+
 (defn -main
   "Start the application"
   []
+  (start-server {:name "repl" :port 5555 :accept 'clojure.core.server/repl :address "0.0.0.0" :server-daemon false})
   (set-init! #'system-cms)
   (start))
+
+#_(add-dependencies :coordinates '[[xxxxxxx "1.2.3"]]
+                    :repositories (merge cemerick.pomegranate.aether/maven-central
+                                         {"clojars" "http://clojars.org/repo"}))

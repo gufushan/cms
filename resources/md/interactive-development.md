@@ -1,20 +1,18 @@
 # Interactive Development
 
 ## Definition
-Runtime enveroment is keeped up, so that you can coding in runtime.
+Runtime enveroment is keeped up and exposed, so that you can coding in runtime.
 
 
 ## Details
 In contrast, normal development: coding, runtime enveroment start up, read all code, execute and exist.   
 
-REPL is a tool to support Interactive Development.  
+REPL is a program to support Interactive Development, as it keeps runtime up & expose it.  
 REPL type:
 
 * Local REPL
 * Remote REPL
 
-Interactive Development start from the starting of Runtime Enveroment(REPL)
-    
 ### Benifit
 
 * you no longer coding blindly
