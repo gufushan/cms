@@ -17,9 +17,12 @@
                  [org.webjars/bootstrap "4.0.0-alpha.2"]
                  [endophile "0.1.2"]
                  [buddy/buddy-auth "1.1.0"]
-                 [oauth-clj "0.1.15"]
+                 [oauth-clj "0.1.15" :exclusions [commons-logging/commons-logging]]
                  [org.danielsz/system "0.3.0"]
-                 [com.cemerick/pomegranate "0.3.1"]
+                 [com.cemerick/pomegranate "0.3.1" :exclusions [commons-logging/commons-logging]]
+                 [prone "1.1.1"]
+                 [ring-logger "0.7.6"]
 
+                 [org.slf4j/jcl-over-slf4j "1.7.21"]
                  [ch.qos.logback/logback-classic "1.1.7"]]
   :profiles {:dev {:source-paths ["dev"]}})

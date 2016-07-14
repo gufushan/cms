@@ -13,4 +13,7 @@
   </root>
   
   <logger name="cms" level="debug" />
+  <logger name="ring.logger" level="debug" />
+  <logger name="org.apache.http.wire" level="debug" />
+  
 </configuration>

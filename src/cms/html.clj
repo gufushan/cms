@@ -15,9 +15,14 @@
    [:body
     (if (:identity request)
       [:div
-       (str "Welcome: " (-> request :identity))
+       (str "Welcome: " (-> request :session :qq-user-info :nickname))
+       #_(image (-> request :session :qq-user-info :figureurl))
+       #_(image (-> request :session :qq-user-info :figureurl-2))
+       (image (-> request :session :qq-user-info :figureurl-qq-1))
+       #_(image (-> request :session :qq-user-info :figureurl-qq-2))
        (link-to "/remove-identity" "logout")]
-      (link-to "/oauth2/entrypoint" "login"))
+      (link-to "/oauth2/entrypoint"
+               (image "http://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/bt_white_76X24.png")))
 
     content
     (include-js "http://tajs.qq.com/stats?sId=56953083" "/assets/jquery/jquery.js" "/assets/tether/dist/js/tether.js" "/assets/bootstrap/js/bootstrap.js")

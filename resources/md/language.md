@@ -15,3 +15,13 @@
       动名词
     不定名词 - 比较之下选择的东西
       
+
+## Language Execution
+
+Every Execution have language to conduct it.
+
+E.g.
+  
+    start clojure runtime to execute target is conducted by java language
+    the execution of target is conducted by clojure language
+  

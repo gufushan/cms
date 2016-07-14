@@ -7,7 +7,12 @@
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.middleware.webjars :refer [wrap-webjars]]
+            ;; prone.middleware have abundant info than ring.middleware.stacktrace
+            [prone.middleware :as prone]
+            [prone.debug :refer [debug]]
+            [ring.logger :as logger]
             [compojure.core :refer :all]
+            [compojure.route :as route]
             [hiccup.core :refer [html]]
 
             [endophile.core :refer [mp]]
@@ -38,6 +43,9 @@
     :qq-user-info-uri "https://graph.qq.com/user/get_user_info"
     })
 
+(defonce all-the-sessions (atom {}))
+
+
 (defn app-routes-factory [qq-oauth2]
   (routes
     (GET "/" request (-> "md" io/resource .getFile io/file file-seq rest link-list (default-layout request) html))
@@ -52,6 +60,7 @@
                (apply oauth2/oauth-authorization-url $)
                (response/redirect $)))
     (GET "/oauth2/callback" {{code :code} :params session :session}
+         #_(debug)
          (as-> qq-oauth2 $
                (conj ((juxt :access-token-uri :client-id :client-secret) $) code (:redirect-uri $))
                (apply oauth2/oauth-access-token $)
@@ -63,7 +72,8 @@
                                         ($$ {:method :get
                                              :url (:qq-openid-uri qq-oauth2)})
                                         (str $$)
-                                        (re-find #"(?<=\"openid\":\").*(?=\")" $$)))
+                                        (re-find #"(?<=\"openid\":\").*(?=\")" $$)
+                                        (clojure.string/replace $$ "-" "")))
                (assoc $ :qq-user-info (as-> $ $$
                                             (:oauth-client $$)
                                             ($$ {:method :get
@@ -71,8 +81,10 @@
                                                  :query-params {
                                                                  "oauth_consumer_key" (:client-id qq-oauth2)
                                                                  "openid" (:identity $)
-                                                                 }})))
-               (assoc (response/redirect (-> $ :history rseq (nth 1))) :session $)))))
+                                                                 }
+                                                 :as :json})))
+               (assoc (response/redirect (-> $ :history rseq (nth 1))) :session $)))
+    (route/not-found "Page Not Found")))
 
 
 (defn wrap-history [handler & [max-size]]
@@ -81,8 +93,7 @@
       (if (zero? max-size)
         (handler request)
         (as-> 
-          (handler (log/spy request)) $
-          (log/spy $)
+          (handler request) $
           (if (contains? $ :session) $ (assoc $ :session (:session request)))
           (update-in $ [:session :history]
                      (fn [history]
@@ -96,11 +107,15 @@
 (defn app-factory [app-routes]
   (let [auth-backend (backends/session)]
     (-> app-routes
+        (logger/wrap-with-logger)
         (wrap-history 5)
         (wrap-authorization auth-backend)
         (wrap-authentication auth-backend)
+        prone/wrap-exceptions
         wrap-webjars
-        (wrap-defaults (assoc-in site-defaults [:security :frame-options] {:allow-from "www.sharkxu.com"}))
+        (wrap-defaults (-> site-defaults
+                           (assoc-in [:security :frame-options] {:allow-from "www.sharkxu.com"})
+                           (assoc-in [:session :store] (ring.middleware.session.memory/memory-store all-the-sessions))))
         wrap-reload)))
 
 
@@ -119,6 +134,9 @@
   (start-server {:name "repl" :port 5555 :accept 'clojure.core.server/repl :address "0.0.0.0" :server-daemon false})
   (set-init! #'system-cms)
   (start))
+
+#_(-main)
+#_(reset)
 
 #_(add-dependencies :coordinates '[[xxxxxxx "1.2.3"]]
                     :repositories (merge cemerick.pomegranate.aether/maven-central
