@@ -45,11 +45,13 @@
 
 (defonce all-the-sessions (atom {}))
 
-
 (defn app-routes-factory [qq-oauth2]
   (routes
-    (GET "/" request (-> "md" io/resource .getFile io/file file-seq rest link-list (default-layout request) html))
-    (GET "/md/:md-name" [md-name :as request] (-> (str "md/" md-name) io/resource slurp mp to-hiccup (default-layout request) html))
+    (GET "/" request (response/redirect "/md"))
+    (GET "/md*" request (let [file (-> (:uri request) (subs 1) io/resource .getFile io/file)]
+                           (if (.isDirectory file)
+                             (-> file .listFiles (link-list request) (default-layout request) html)
+                             (-> file slurp mp to-hiccup (default-layout request) html))))
     (GET "/remove-identity" {session :session} 
          (as-> session $
                (dissoc $ :identity)
@@ -87,31 +89,34 @@
     (route/not-found "Page Not Found")))
 
 
-(defn wrap-history [handler & [max-size]]
-  (let [max-size (or max-size 10)]
-    (fn [request]
-      (if (zero? max-size)
-        (handler request)
-        (as-> 
-          (handler request) $
-          (if (contains? $ :session) $ (assoc $ :session (:session request)))
-          (update-in $ [:session :history]
-                     (fn [history]
-                       (as-> (or history []) $$
-                             (if (or (< max-size 0) (> max-size (count $$)))
-                               $$
-                               (subvec $$ 1 max-size))
-                             (conj $$ (:uri request))))))))))
+(defn wrap-history [handler & {:keys [max-size ignore-4xx ignore-5xx]}]
+  (fn [request]
+    (let [response (handler request)
+          max-size (or max-size 10)]
+      (if (or (zero? max-size)
+              (and ignore-4xx (> (:status response) 399) (< (:status response) 500))
+              (and ignore-5xx (> (:status response) 499) (< (:status response) 600)))
+        response
+        (->  (if (contains? response :session)
+               response
+               (assoc response :session (:session request)))
+             (update-in [:session :history]
+                        (fn [history]
+                          (as-> (or history []) $$
+                                (if (or (< max-size 0) (> max-size (count $$)))
+                                  $$
+                                  (subvec $$ 1 max-size))
+                                (conj $$ (:uri request))))))))))
 
 
 (defn app-factory [app-routes]
   (let [auth-backend (backends/session)]
     (-> app-routes
-        (logger/wrap-with-logger)
-        (wrap-history 5)
+        (wrap-history :max-size 5 :ignore-4xx true :ignore-5xx true)
         (wrap-authorization auth-backend)
         (wrap-authentication auth-backend)
         prone/wrap-exceptions
+        (logger/wrap-with-logger {:printer :no-color})
         wrap-webjars
         (wrap-defaults (-> site-defaults
                            (assoc-in [:security :frame-options] {:allow-from "www.sharkxu.com"})

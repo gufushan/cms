@@ -28,9 +28,10 @@
     (include-js "http://tajs.qq.com/stats?sId=56953083" "/assets/jquery/jquery.js" "/assets/tether/dist/js/tether.js" "/assets/bootstrap/js/bootstrap.js")
     ]])
 
-(defn link-list [files]
+(defn link-list [files request]
   [:ol
    (map (fn [file]
-          (let [file-name (.getName file)]
-            [:li (link-to (str "md/" file-name) file-name)])) 
+          (let [file-name (.getName file)
+                file-name-view (str file-name (when (.isDirectory file) "/"))]
+            [:li (link-to (str (-> request :uri) "/" file-name) file-name-view)])) 
         files)])
