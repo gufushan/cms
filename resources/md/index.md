@@ -1,0 +1,328 @@
+development method:
+    agile.md
+    interactive-development.md
+    
+    Scrum
+    
+
+relationship & procedure:
+    function.md
+    procedure.md
+    authentication.md
+    Transaction
+    
+language:
+    clojure.md
+    expression-problem.md
+    language.md
+    C
+    Clojure
+    CSS
+    dart
+    expression
+    Haskell
+    HTML
+    Javascript
+    JavaSE
+    Python
+    Ruby
+    UML
+    YAML
+    XML
+    XSD
+    programming-language.md
+    
+container:
+    docker.md
+    Container
+    
+    
+    
+resolve.md
+program.md
+problem-specification.md
+domain-problem.md
+entry-point.md
+executor.md
+
+lib & framework(runtime will rely on it):
+    framework-vs-lib.md
+    angularjs
+    Atomikos
+    AXIS
+    Bitronix
+    Bootstrap
+    Cordova
+    cxf
+    Datomic
+    dojo
+    EclipseLink
+    Flyway
+    hibernate
+    Infinispan
+    Isis
+    JavaUtilLogging
+    JAXB
+    JAXRS
+    jaxws
+    JayData
+    jaas
+    JBossModules
+    JDO
+    jekyll
+    JMX
+    JNDI
+    Jolokia
+    jpa
+    jquery
+    JTA
+    library
+    Log4j
+    logback
+    Logging
+    Meteor
+    Mocha
+    Modernizr
+    NakedObjects
+    OAuth
+    OData
+    Open Cooperative Web Framework
+    openJPA
+    OSGi
+    Polymer
+    RequireJS
+    REST
+    RestfulObjects
+    SDO
+    Selenium
+    SLF4J
+    SMAL
+    SMTP
+    SPI
+    Spring
+    Struts
+    Thymeleaf
+    tomcat
+    TomcatConnectionPool
+    undertow
+    Wildfly
+    XMPP
+    WSS4J
+    webcomponent
+    WebService
+    
+university:
+    mit-eecs.md
+goal:
+    my-goal.md
+    
+polymorphism:
+    polymorphism.md
+    
+shape:
+    recursion.md
+xin:
+    xin.md
+
+algorithm:
+    Algorithm
+    
+AMQP
+Android
+Annotation
+
+software:
+    Ansible
+    ApacheDS
+    AvastSandbox
+    Browser
+    bower
+    Bugzilla
+    cargo
+    CD
+    DB
+    ERP
+    
+    Github
+    flickr
+    Firewall
+    Eclipse
+    Go
+    GPG
+    Gradle
+    grunt
+    HAProxy
+    httpd
+    intellij
+    JAZZ
+    IDE
+    Jenkins
+    JMeter
+    js-import-maven-plugin
+    jshint
+    jslint
+    LDAP
+    Maven2
+    Middleware
+    MozillaJavaPlugin
+    Mylyn
+    MySQL
+    Nexus
+    npm
+    odoo
+    OFBiz
+    nginx
+    Oracle
+    OSS
+    Primavera6
+    PuTTY
+    Redis
+    RSA
+    rsatransformationservice
+    RTC
+    SCM
+    ssh
+    Supervisor
+    UrbanCode
+    Vim
+    VMware
+    Yeoman
+    
+ApplicationCache
+architecture & design:
+    Architecture
+    DDD
+    Design
+    EIP
+    EntityDataModel
+    Exchange
+    Model
+    MVCC
+    MVVM
+    ODM
+    OOP
+    overload
+    PageObject
+    Pattern
+Asynchronous IO
+Authenticate
+CDI
+CFG
+Closure
+CodingOverConfiguration
+CommandObject
+ComputerApplication
+ComputerScience
+Concurrency
+Config
+Context
+
+security:
+    CORS
+    EH
+    Encrypt
+    Security
+    
+    
+encoding:
+    CRLF
+    Encoding
+DataModel
+Datasource
+DateStructure
+DBMigration
+DeepLearning
+DevelopmentOfFramework
+DocModular
+EA
+EECS.txt
+physic:
+    ElectricalCircuit
+EnvSetup
+
+file:
+    FHS
+    FileSystem
+FOUC
+
+programming style:
+    GenericProgramming
+HardwareSoftware
+Homoiconicity
+HotDeployment
+HTTP
+Integration
+Interface
+IoC_DI
+ITSystem.txt
+javaaccesscontroller
+JavaEE
+JVM
+Language
+License
+LinkedData
+
+os:
+    Linux
+    OperationSystem
+    OS
+
+mdv
+Messaging
+metadata
+MIME
+MutationObserver
+MyPublicKey
+NetworkConnection
+executor:
+    nodejs
+OASIS
+OpenID
+openshift
+OSIModel
+Parse
+persevere
+Platform
+PortForwarding
+Principle
+Process
+ProcessThread
+Program
+ProgrammingParadigm
+Promise
+Proxy
+RDF
+ReferentialTransparency
+Regex
+RegisterMachine
+S-expression
+Scope
+SDLC
+SE
+self-similarity
+Servlet3.0
+Session
+SICP
+SingleThreadLanguage
+SolutionStack
+StagingEnv
+Standard
+StatementVSExpression
+TableRelation
+TCP_IP
+Template
+test
+TimeComplex
+Turing
+TXT
+Type
+Versioning
+Virtualization
+Web
+webanimation
+WebAPI
+Webhook
+webminifier
+webpackagemanage
+worklight
+XaaS
