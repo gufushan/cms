@@ -14,6 +14,7 @@
             [compojure.core :refer :all]
             [compojure.route :as route]
             [hiccup.core :refer [html]]
+            [datomic.api :as d]
 
             [endophile.core :refer [mp]]
             [endophile.hiccup :refer [to-hiccup]]
@@ -23,9 +24,11 @@
             [com.stuartsierra.component :as component]
             [system.repl :refer [system set-init! start stop reset]]
             [system.components.jetty :refer [new-web-server]]
+            [system.components.datomic :refer [new-datomic-db]]
             [cemerick.pomegranate :refer [add-dependencies]]
 
-            [cms.html :refer :all]))
+            [cms.html :refer :all]
+            [cms.data :as c-data]))
 
 (def qq-oauth2
   {
@@ -49,9 +52,9 @@
   (routes
     (GET "/" request (response/redirect "/md"))
     (GET "/md*" request (let [file (-> (:uri request) (subs 1) io/resource .getFile io/file)]
-                           (if (.isDirectory file)
-                             (-> file .listFiles (link-list request) (default-layout request) html)
-                             (-> file slurp mp to-hiccup (default-layout request) html))))
+                          (if (.isDirectory file)
+                            (-> file .listFiles (link-list request) (default-layout request) html)
+                            (-> file slurp mp to-hiccup (default-layout request) html))))
     (GET "/remove-identity" {session :session} 
          (as-> session $
                (dissoc $ :identity)
@@ -86,6 +89,13 @@
                                                                  }
                                                  :as :json})))
                (assoc (response/redirect (-> $ :history rseq (nth 1))) :session $)))
+    (POST "/comment" [content] (as-> (log/spy content) $
+                                     [:db/add (d/tempid :db.part/user) :cms/comment $]
+                                     [$]
+                                     (d/transact (-> system :datomic-db :conn) $)
+                                     (str "Done with result: " $)))
+    (GET "/comment" [id] (-> (d/q '[:find ?c :where [?e :cms/comment ?c]] (-> system :datomic-db :conn d/db))
+                             str))
     (route/not-found "Page Not Found")))
 
 
@@ -120,6 +130,7 @@
         wrap-webjars
         (wrap-defaults (-> site-defaults
                            (assoc-in [:security :frame-options] {:allow-from "www.sharkxu.com"})
+                           (assoc-in [:security :anti-forgery] false)
                            (assoc-in [:session :store] (ring.middleware.session.memory/memory-store all-the-sessions))))
         wrap-reload)))
 
@@ -130,7 +141,12 @@
         (app-routes-factory $)
         (app-factory $)
         (component/system-map
-          :web (new-web-server 80 $))))
+          :web (new-web-server 80 $)
+          ;;run: bin\transactor config\samples\dev-transactor-template.properties to start transactor
+          :datomic-db (new-datomic-db "datomic:dev://localhost:4334/cms"))))
+
+(defn init-schema []
+  (d/transact (-> system :datomic-db :conn) c-data/schema))
 
 
 (defn -main
@@ -138,7 +154,8 @@
   []
   (start-server {:name "repl" :port 5555 :accept 'clojure.core.server/repl :address "0.0.0.0" :server-daemon false})
   (set-init! #'system-cms)
-  (start))
+  (start)
+  (init-schema))
 
 #_(-main)
 #_(reset)

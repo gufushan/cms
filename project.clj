@@ -12,14 +12,16 @@
                  [ring-webjars "0.1.1" :exclusions [com.fasterxml.jackson.core/jackson-core]]
                  [compojure "1.5.0"]
                  [hiccup "1.0.5"]
+                 [com.datomic/datomic-pro "0.9.5359" :exclusions [commons-codec org.apache.httpcomponents/httpclient]]
 
                  [org.webjars.bower/tether "1.3.2"]
                  [org.webjars/bootstrap "4.0.0-alpha.2"]
+                 [org.webjars.bower/semantic "2.2.2"]
                  [endophile "0.1.2"]
                  [buddy/buddy-auth "1.1.0"]
-                 [oauth-clj "0.1.15" :exclusions [commons-logging/commons-logging]]
+                 [oauth-clj "0.1.15" :exclusions [commons-logging]]
                  [org.danielsz/system "0.3.0"]
-                 [com.cemerick/pomegranate "0.3.1" :exclusions [commons-logging/commons-logging]]
+                 [com.cemerick/pomegranate "0.3.1" :exclusions [commons-logging]]
                  [prone "1.1.1"]
                  [ring-logger "0.7.6"]
 

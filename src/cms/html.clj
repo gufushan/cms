@@ -5,12 +5,38 @@
     [hiccup.element :refer :all]
     [hiccup.form :refer :all] ))
 
+(defn comments []
+  [:section
+   [:div {:class "ui rating" :data-max-rating "5"}]
+   [:div {:class "ui labeled button"}
+    [:div {:class "ui basic blue button"}
+     [:i {:class "heart icon"}]
+     "Like"]
+    [:a {:class "ui basic red left pointing label"}
+     "1,048"]]
+   [:div {:class "ui comments"}
+    [:div {:class "comment"}
+     [:a {:class "avatar"}
+      ]
+     [:div {:class "content"}
+      [:a {:class "author"}"Steve Jobes"]]
+     [:div {:class "metadata"}
+      [:div {:class "date"}"2 days ago"]]
+     [:div {:class "text"}"Revolutionary!"]
+     [:div {:class "actions"}
+      [:a {:class "reply active"}"reply"]]
+     [:form {:class "ui reply form" :action "/comment" :method "post"}
+      [:div {:class "field"}
+       [:textarea {:name "content"}]]
+      [:div {:class "ui primary submit labeled icon button"}
+       [:i {:class "icon edit"}]" Add Reply"]]]]])
+
 
 (defn default-layout [content request]
   [:html
    [:head
     [:meta {:property "qc:admins" :content "1541247527630123056375"}]
-    (include-css "/assets/bootstrap/css/bootstrap.css")
+    (include-css "/assets/semantic/dist/semantic.css")
     ]
    [:body
     (if (:identity request)
@@ -25,8 +51,10 @@
                (image "http://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/bt_white_76X24.png")))
 
     content
-    (include-js "http://tajs.qq.com/stats?sId=56953083" "/assets/jquery/jquery.js" "/assets/tether/dist/js/tether.js" "/assets/bootstrap/js/bootstrap.js")
-    ]])
+    (comments)
+    (include-js "/assets/jquery/jquery.js" "/assets/semantic/dist/semantic.js" "http://tajs.qq.com/stats?sId=56953083"
+                "/cms.js")]])
+
 
 (defn link-list [files request]
   [:ol
